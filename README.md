@@ -14,13 +14,20 @@
 - 🌐 Multi-language support (English/Chinese)
 - 📁 Automatic `.opencode/` directory structure
 
+## Prerequisites
+
+Before installing, ensure you have:
+
+- **Opencode CLI installed** - Install globally: `npm i -g opencode-ai`
+- **AI Provider configured** - Set up your API keys in Opencode (OpenAI, Anthropic, Fireworks, etc.)
+
 ## Quick Start
 
-No installation needed! Use `npm init` or `npx`:
+No installation needed! Use `npm create` or `npx`:
 
 ```bash
-# Using npm init (recommended)
-npm init squirrel-opencode-harness "fireworks-ai/accounts/fireworks/routers/kimi-k2p5-turbo"
+# Using npm create (recommended)
+npm create squirrel-opencode-harness "fireworks-ai/accounts/fireworks/routers/kimi-k2p5-turbo"
 
 # Using npx
 npx create-squirrel-opencode-harness "fireworks-ai/accounts/fireworks/routers/kimi-k2p5-turbo"
@@ -68,22 +75,20 @@ echo "your-model-id" | create-squirrel-opencode-harness --stdin
 create-squirrel-opencode-harness --interactive
 ```
 
-### With npm init
-
-When using `npm init`, pass arguments after `--`:
+### With npm create
 
 ```bash
-# Basic usage with npm init
-npm init squirrel-opencode-harness -- "your-model-id"
+# Basic usage with npm create
+npm create squirrel-opencode-harness "your-model-id"
 
 # With language option
-npm init squirrel-opencode-harness -- "your-model-id" --lang zh
+npm create squirrel-opencode-harness "your-model-id" --lang zh
 
 # Interactive mode
-npm init squirrel-opencode-harness -- --interactive --lang zh
+npm create squirrel-opencode-harness --interactive --lang zh
 
 # Using stdin (pipe model id)
-echo "your-model-id" | npm init squirrel-opencode-harness -- --stdin
+echo "your-model-id" | npm create squirrel-opencode-harness --stdin
 ```
 
 ### Language Selection
@@ -140,13 +145,38 @@ Options:
         └── sprint-status-template.md
 ```
 
+## Next Steps (After Installation)
+
+Once the harness is scaffolded, follow these steps to start working:
+
+### 1. Start Opencode
+
+```bash
+# In the same directory where you ran the scaffold
+opencode
+```
+
+### 2. Switch to Harness Agent
+
+- Press **Tab** to cycle through available agents
+- Select **`harness`** agent - this is your main interface for AI collaboration
+- ⚠️ **Important**: Always use the `harness` agent for communication. Do NOT use `planner`, `generator`, or `evaluator` directly - the harness will orchestrate these automatically.
+
+### 3. Begin Your First Sprint
+
+```
+You: I want to build a todo list app
+
+Harness: [Will create a sprint contract and guide you through the process]
+```
+
 ## Examples
 
 ### Example 1: Quick Start
 
 ```bash
-# Using npm init (no install needed)
-npm init squirrel-opencode-harness -- "openai/gpt-4"
+# Using npm create (no install needed)
+npm create squirrel-opencode-harness "openai/gpt-4"
 
 # Or with npx
 npx create-squirrel-opencode-harness "openai/gpt-4"
@@ -155,7 +185,7 @@ npx create-squirrel-opencode-harness "openai/gpt-4"
 ### Example 2: Interactive Mode in Chinese
 
 ```bash
-npm init squirrel-opencode-harness -- --interactive --lang zh
+npm create squirrel-opencode-harness --interactive --lang zh
 
 # Or with npx
 npx create-squirrel-opencode-harness --interactive --lang zh
@@ -165,7 +195,7 @@ npx create-squirrel-opencode-harness --interactive --lang zh
 
 ```bash
 export MODEL_ID="anthropic/claude-3-sonnet"
-echo $MODEL_ID | npm init squirrel-opencode-harness -- --stdin
+echo $MODEL_ID | npm create squirrel-opencode-harness --stdin
 ```
 
 ## Error Handling
@@ -204,13 +234,20 @@ MIT License - see [LICENSE](LICENSE) file for details.
 - 🌐 多语言支持（英文/中文）
 - 📁 自动创建 `.opencode/` 目录结构
 
+## 前置要求
+
+安装前，请确保您已具备：
+
+- **Opencode CLI 已安装** - 全局安装：`npm i -g opencode-ai`
+- **AI Provider 已配置** - 在 Opencode 中设置您的 API 密钥（OpenAI、Anthropic、Fireworks 等）
+
 ## 快速开始
 
-无需安装！直接使用 `npm init` 或 `npx`：
+无需安装！直接使用 `npm create` 或 `npx`：
 
 ```bash
-# 使用 npm init（推荐）
-npm init squirrel-opencode-harness "fireworks-ai/accounts/fireworks/routers/kimi-k2p5-turbo"
+# 使用 npm create（推荐）
+npm create squirrel-opencode-harness "fireworks-ai/accounts/fireworks/routers/kimi-k2p5-turbo"
 
 # 使用 npx
 npx create-squirrel-opencode-harness "fireworks-ai/accounts/fireworks/routers/kimi-k2p5-turbo"
@@ -258,22 +295,20 @@ echo "你的模型id" | create-squirrel-opencode-harness --stdin
 create-squirrel-opencode-harness --interactive
 ```
 
-### 使用 npm init
-
-使用 `npm init` 时，在 `--` 后传递参数：
+### 使用 npm create
 
 ```bash
 # 基础用法
-npm init squirrel-opencode-harness -- "your-model-id"
+npm create squirrel-opencode-harness "your-model-id"
 
 # 指定语言
-npm init squirrel-opencode-harness -- "your-model-id" --lang zh
+npm create squirrel-opencode-harness "your-model-id" --lang zh
 
 # 交互模式
-npm init squirrel-opencode-harness -- --interactive --lang zh
+npm create squirrel-opencode-harness --interactive --lang zh
 
 # 使用标准输入（管道输入模型id）
-echo "your-model-id" | npm init squirrel-opencode-harness -- --stdin
+echo "your-model-id" | npm create squirrel-opencode-harness --stdin
 ```
 
 ### 语言选择
@@ -330,13 +365,38 @@ create-squirrel-opencode-harness "模型id" --lang zh
         └── sprint-status-template.md
 ```
 
+## 后续步骤（安装后）
+
+脚手架搭建完成后，按以下步骤开始工作：
+
+### 1. 启动 Opencode
+
+```bash
+# 在运行脚手架的同一目录
+opencode
+```
+
+### 2. 切换到 Harness Agent
+
+- 按 **Tab** 键循环切换可用 agent
+- 选择 **`harness`** agent - 这是您与 AI 协作的主要界面
+- ⚠️ **重要**：请始终使用 `harness` agent 进行交流。**不要**直接使用 `planner`、`generator` 或 `evaluator` - harness 会自动协调这些 agent。
+
+### 3. 开始您的第一个 Sprint
+
+```
+您：我想构建一个待办事项应用
+
+Harness: [将创建 sprint 合同并引导您完成整个过程]
+```
+
 ## 使用示例
 
 ### 示例 1：快速开始
 
 ```bash
-# 使用 npm init（无需安装）
-npm init squirrel-opencode-harness -- "openai/gpt-4"
+# 使用 npm create（无需安装）
+npm create squirrel-opencode-harness "openai/gpt-4"
 
 # 或使用 npx
 npx create-squirrel-opencode-harness "openai/gpt-4"
@@ -345,7 +405,7 @@ npx create-squirrel-opencode-harness "openai/gpt-4"
 ### 示例 2：中文交互模式
 
 ```bash
-npm init squirrel-opencode-harness -- --interactive --lang zh
+npm create squirrel-opencode-harness --interactive --lang zh
 
 # 或使用 npx
 npx create-squirrel-opencode-harness --interactive --lang zh
@@ -355,7 +415,7 @@ npx create-squirrel-opencode-harness --interactive --lang zh
 
 ```bash
 export MODEL_ID="anthropic/claude-3-sonnet"
-echo $MODEL_ID | npm init squirrel-opencode-harness -- --stdin
+echo $MODEL_ID | npm create squirrel-opencode-harness --stdin
 ```
 
 ## 错误处理
