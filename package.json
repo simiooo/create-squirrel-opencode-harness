@@ -1,6 +1,6 @@
 {
   "name": "create-squirrel-opencode-harness",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "Scaffold squirrel opencode harness into .opencode directory",
   "main": "dist/cli.js",
   "type": "module",
@@ -13,7 +13,6 @@
     "dev": "tsx src/cli.ts",
     "clean": "rm -rf dist",
     "prepublishOnly": "pnpm run build && pnpm run test",
-    "publish": "pnpm publish",
     "test": "vitest run",
     "test:watch": "vitest",
     "test:ui": "vitest --ui"
