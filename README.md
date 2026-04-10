@@ -158,7 +158,7 @@ npm create squirrel-opencode-harness "your-model-id"
 # 2. Start opencode
 opencode
 
-# 3. Press Tab to switch to harness agent and start collaborating
+# 3. Press Tab to switch to the agent named "harness" and start collaborating
 ```
 
 ### 1. Start Opencode
@@ -390,7 +390,7 @@ npm create squirrel-opencode-harness "your-model-id"
 # 2. 启动 opencode
 opencode
 
-# 3. 按 Tab 键切换到 harness agent 开始协作
+# 3. 按 Tab 键切换到名叫 "harness" 的 agent 开始协作
 ```
 
 ### 1. 启动 Opencode
