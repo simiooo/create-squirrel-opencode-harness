@@ -1,6 +1,6 @@
 {
   "name": "create-squirrel-opencode-harness",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Scaffold squirrel opencode harness into .opencode directory",
   "main": "dist/cli.js",
   "type": "module",
