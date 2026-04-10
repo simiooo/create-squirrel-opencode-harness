@@ -7,9 +7,10 @@ import { run } from '../src/index.js';
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-// Helper to create a temp test directory
+// Helper to create a temp test directory with unique name
 async function createTempDir(): Promise<string> {
-  const tempDir = path.join(__dirname, '..', '.test-temp', `i18n-${Date.now()}`);
+  const uniqueId = `i18n-${Date.now()}-${Math.random().toString(36).slice(2, 11)}`;
+  const tempDir = path.join(__dirname, '..', '.test-temp', uniqueId);
   await fs.ensureDir(tempDir);
   return tempDir;
 }
