@@ -1,0 +1,65 @@
+# Dependencies
+node_modules/
+.pnpm-store/
+
+# Build outputs
+# Note: dist/ is excluded from Git but INCLUDED in npm package
+# via package.json "files" field. The prepublishOnly script builds
+# dist/ before publishing.
+dist/
+*.tsbuildinfo
+
+# Test outputs
+.test-temp/
+*.log
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Environment
+.env
+.env.local
+
+# Coverage
+coverage/
+
+# Logs
+logs/
+*.log
+npm-debug.log*
+pnpm-debug.log*
+
+# Temporary files
+tmp/
+temp/
+*.tmp
+
+# Runtime data
+pids/
+*.pid
+*.seed
+*.pid.lock
+
+# Optional npm cache directory
+.npm
+
+# Optional eslint cache
+.eslintcache
+
+# === NPM Package Publishing Note ===
+# The dist/ directory is excluded from Git (above) but WILL be
+# included in the npm package because:
+# 1. package.json "files" includes "dist/**/*"
+# 2. "prepublishOnly" script runs "pnpm run build" before publishing
+# 3. npm packs the files after prepublishOnly completes
+#
+# If you want dist/ in Git (not recommended), remove "dist/" above.
+# If you want to exclude dist/ from npm too, remove it from package.json files.

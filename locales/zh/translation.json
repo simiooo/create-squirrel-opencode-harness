@@ -1,0 +1,35 @@
+{
+  "cli": {
+    "description": "将松鼠Opencode Harness脚手架搭建到.opencode目录",
+    "modelOption": "代理模型标识符 (例如: fireworks-ai/accounts/fireworks/routers/kimi-k2p5-turbo)",
+    "interactiveOption": "使用交互式模式输入模型",
+    "stdinOption": "从标准输入读取模型",
+    "langOption": "语言 (en/zh)",
+    "positionalModel": "模型标识符 (位置参数)"
+  },
+  "errors": {
+    "modelRequired": "模型标识符是必需的。请通过 --model、位置参数、--stdin 或 --interactive 提供",
+    "sourceNotFound": "源目录未找到。期望路径:",
+    "transactionFailed": "事务中止: {{count}} 个文件已存在。请删除现有文件或使用不同的目标目录。",
+    "stdinNotAvailable": "标准输入不可用 (未检测到管道输入)",
+    "stdinReadError": "从标准输入读取失败: {{message}}",
+    "stdinNoData": "未从标准输入接收到数据"
+  },
+  "prompts": {
+    "enterModel": "请输入模型标识符:",
+    "modelRequired": "模型标识符是必需的"
+  },
+  "info": {
+    "checkingDirs": "正在检查目录...",
+    "transactionCheck": "正在执行事务检查...",
+    "copyingFiles": "正在复制文件...",
+    "usingModel": "使用模型: {{model}}",
+    "noConflicts": "未发现冲突 ({{count}} 个文件待复制)",
+    "success": "Harness脚手架搭建成功!",
+    "location": "位置: {{path}}"
+  },
+  "transaction": {
+    "failed": "事务失败: 以下文件已存在:"
+  },
+  "title": "松鼠Opencode Harness脚手架"
+}

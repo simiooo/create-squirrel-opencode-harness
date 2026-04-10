@@ -1,0 +1,35 @@
+{
+  "cli": {
+    "description": "Scaffold squirrel opencode harness into .opencode directory",
+    "modelOption": "Model identifier for agents (e.g., fireworks-ai/accounts/fireworks/routers/kimi-k2p5-turbo)",
+    "interactiveOption": "Use interactive mode to input model",
+    "stdinOption": "Read model from stdin",
+    "langOption": "Language (en/zh)",
+    "positionalModel": "Model identifier (positional argument)"
+  },
+  "errors": {
+    "modelRequired": "Model is required. Provide it via --model, positional argument, --stdin, or --interactive",
+    "sourceNotFound": "Source directories not found. Expected:",
+    "transactionFailed": "Transaction aborted: {{count}} file(s) already exist. Remove existing files or use a different target directory.",
+    "stdinNotAvailable": "Stdin is not available (no piped input detected)",
+    "stdinReadError": "Failed to read from stdin: {{message}}",
+    "stdinNoData": "No data received from stdin"
+  },
+  "prompts": {
+    "enterModel": "Enter the model identifier:",
+    "modelRequired": "Model identifier is required"
+  },
+  "info": {
+    "checkingDirs": "Checking directories...",
+    "transactionCheck": "Performing transaction check...",
+    "copyingFiles": "Copying files...",
+    "usingModel": "Using model: {{model}}",
+    "noConflicts": "No conflicts found ({{count}} files to copy)",
+    "success": "Harness scaffolded successfully!",
+    "location": "Location: {{path}}"
+  },
+  "transaction": {
+    "failed": "Transaction failed: The following files already exist:"
+  },
+  "title": "Squirrel Opencode Harness Scaffolder"
+}
