@@ -149,6 +149,18 @@ Options:
 
 Once the harness is scaffolded, follow these steps to start working:
 
+### Workflow Overview
+
+```bash
+# 1. Run in your project directory
+npm create squirrel-opencode-harness "your-model-id"
+
+# 2. Start opencode
+opencode
+
+# 3. Press Tab to switch to harness agent and start collaborating
+```
+
 ### 1. Start Opencode
 
 ```bash
@@ -368,6 +380,18 @@ create-squirrel-opencode-harness "模型id" --lang zh
 ## 后续步骤（安装后）
 
 脚手架搭建完成后，按以下步骤开始工作：
+
+### 工作流程概览
+
+```bash
+# 1. 在项目目录运行创建命令
+npm create squirrel-opencode-harness "your-model-id"
+
+# 2. 启动 opencode
+opencode
+
+# 3. 按 Tab 键切换到 harness agent 开始协作
+```
 
 ### 1. 启动 Opencode
 
