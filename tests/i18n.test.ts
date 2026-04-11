@@ -154,20 +154,17 @@ describe('Template Processing', () => {
     expect(evaluatorContent).toContain(`model: ${modelId}`);
   });
 
-  it('should copy harness templates without modification', async () => {
+  it('should create harness directory structure with sprints subdirectory', async () => {
     await run({
       positionalModel: 'test-model',
       lang: 'en'
     });
 
-    const contractTemplate = await fs.readFile(
-      path.join(tempDir, '.opencode', 'harness', 'templates', 'contract-template.md'),
-      'utf-8'
-    );
-
-    // Templates should not have model placeholder
-    expect(contractTemplate).not.toContain('<%= model %>');
-    // Templates should be copied as-is
-    expect(contractTemplate).toContain('Sprint Contract');
+    expect(await fs.pathExists(
+      path.join(tempDir, '.opencode', 'harness')
+    )).toBe(true);
+    expect(await fs.pathExists(
+      path.join(tempDir, '.opencode', 'harness', 'sprints')
+    )).toBe(true);
   });
 });

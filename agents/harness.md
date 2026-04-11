@@ -42,19 +42,29 @@ All inter-agent communication flows through files in the `harness/` directory. T
 
 #### File Lifecycle
 
+Each sprint gets its own subdirectory under `harness/sprints/`. This preserves the full history across sprints — agents can refer back to previous sprint artifacts for context, and the final summary can aggregate results from all sprint folders.
+
 ```
 harness/
-├── prompt.md              # User's original prompt (written by Harness, read by Planner)
-├── spec.md                # Full product specification (written by Planner, read by all)
-├── sprint-status.md       # Current workflow state (updated by all agents, read by all)
-├── contract.md            # Proposed sprint contract (written by Generator, read by Evaluator)
-├── contract-review.md     # Evaluator's contract review (written by Evaluator, read by Generator)
-├── contract-accepted.md    # Evaluator's contract acceptance (written by Evaluator, read by Generator)
-├── self-eval.md           # Generator's self-evaluation (written by Generator, read by Evaluator)
-├── handoff.md             # Generator's handoff to Evaluator (written by Generator, read by Evaluator)
-├── evaluation.md          # Evaluator's findings and scores (written by Evaluator, read by Generator)
-└── final-summary.md       # Final harness run summary (written by Harness)
+├── prompt.md                  # User's original prompt (written by Harness, read by Planner)
+├── spec.md                    # Full product specification (written by Planner, read by all)
+├── sprint-status.md           # Current workflow state (updated by all agents, read by all)
+├── final-summary.md          # Final harness run summary (written by Harness)
+└── sprints/
+    ├── sprint-1/
+    │   ├── contract.md            # Sprint contract proposal
+    │   ├── contract-review.md      # Evaluator's contract review
+    │   ├── contract-accepted.md   # Evaluator's contract acceptance
+    │   ├── self-eval.md           # Generator's self-evaluation
+    │   ├── handoff.md             # Generator's handoff to Evaluator
+    │   └── evaluation.md          # Evaluator's findings and scores
+    ├── sprint-2/
+    │   └── ...
+    └── sprint-N/
+        └── ...
 ```
+
+Throughout the documentation below, `[sprint-dir]` refers to `harness/sprints/sprint-N` for the current sprint number N.
 
 #### Who Writes What
 
@@ -63,12 +73,12 @@ harness/
 | `prompt.md` | Harness | Planner | User's original prompt |
 | `spec.md` | Planner | Generator, Evaluator, Harness | Full product specification |
 | `sprint-status.md` | Harness (primary), Generator, Evaluator | All agents | Current sprint and phase tracking |
-| `contract.md` | Generator | Evaluator, Harness | Sprint contract proposal |
-| `contract-review.md` | Evaluator | Generator, Harness | Contract review feedback |
-| `contract-accepted.md` | Evaluator | Generator, Harness | Contract acceptance confirmation |
-| `self-eval.md` | Generator | Evaluator, Harness | Generator's self-assessment |
-| `handoff.md` | Generator | Evaluator, Harness | Testing instructions for Evaluator |
-| `evaluation.md` | Evaluator | Generator, Harness | Sprint evaluation results |
+| `[sprint-dir]/contract.md` | Generator | Evaluator, Harness | Sprint contract proposal |
+| `[sprint-dir]/contract-review.md` | Evaluator | Generator, Harness | Contract review feedback |
+| `[sprint-dir]/contract-accepted.md` | Evaluator | Generator, Harness | Contract acceptance confirmation |
+| `[sprint-dir]/self-eval.md` | Generator | Evaluator, Harness | Generator's self-assessment |
+| `[sprint-dir]/handoff.md` | Generator | Evaluator, Harness | Testing instructions for Evaluator |
+| `[sprint-dir]/evaluation.md` | Evaluator | Generator, Harness | Sprint evaluation results |
 | `final-summary.md` | Harness | User | End-of-run summary |
 
 #### File State Machine
@@ -77,22 +87,22 @@ harness/
 [Phase: planning]
   prompt.md → Planner reads → Planner writes spec.md
 
-[Phase: contract-negotiation]
-  Generator reads spec.md → Generator writes contract.md
-  Evaluator reads contract.md + spec.md → Evaluator writes contract-review.md
-  (loop: Generator reads contract-review.md → Generator updates contract.md → Evaluator re-reviews)
-  Evaluator writes contract-accepted.md
+[Phase: contract-negotiation]  (files go to sprints/sprint-N/)
+  Generator reads spec.md → Generator writes sprints/sprint-N/contract.md
+  Evaluator reads sprints/sprint-N/contract.md + spec.md → Evaluator writes sprints/sprint-N/contract-review.md
+  (loop: Generator reads sprints/sprint-N/contract-review.md → Generator updates sprints/sprint-N/contract.md → Evaluator re-reviews)
+  Evaluator writes sprints/sprint-N/contract-accepted.md
 
 [Phase: building]
-  Generator reads contract.md + spec.md → Generator writes code
-  Generator writes self-eval.md → Generator writes handoff.md
+  Generator reads sprints/sprint-N/contract.md + spec.md → Generator writes code
+  Generator writes sprints/sprint-N/self-eval.md → Generator writes sprints/sprint-N/handoff.md
 
 [Phase: evaluation]
-  Evaluator reads handoff.md + contract.md + spec.md → Evaluator writes evaluation.md
+  Evaluator reads sprints/sprint-N/handoff.md + sprints/sprint-N/contract.md + spec.md → Evaluator writes sprints/sprint-N/evaluation.md
 
 [Phase: iteration]
-  Generator reads evaluation.md → Generator fixes code → Generator updates handoff.md
-  Evaluator re-evaluates → Evaluator updates evaluation.md
+  Generator reads sprints/sprint-N/evaluation.md → Generator fixes code → Generator updates sprints/sprint-N/handoff.md
+  Evaluator re-evaluates → Evaluator updates sprints/sprint-N/evaluation.md
   (loop until PASS or max 3 rounds)
 ```
 
@@ -100,7 +110,7 @@ harness/
 
 ### Step 1: Initialize
 
-1. Create `harness/` directory if it doesn't exist.
+1. Create `harness/` and `harness/sprints/` directories if they don't exist.
 2. Write the user's prompt to `harness/prompt.md`.
 3. Initialize `harness/sprint-status.md`:
 
@@ -138,45 +148,47 @@ For each sprint defined in `harness/spec.md`:
 
 Update `harness/sprint-status.md` to phase `contract-negotiation`.
 
+Create the sprint directory: `harness/sprints/sprint-N/` (where N is the current sprint number).
+
 Invoke the `@generator` subagent:
-> Read harness/spec.md and harness/sprint-status.md. Create a sprint contract for Sprint [N]. Write the contract to harness/contract.md following the format in your system prompt.
+> Read harness/spec.md and harness/sprint-status.md. Create a sprint contract for Sprint [N]. Write the contract to harness/sprints/sprint-[N]/contract.md following the format in your system prompt.
 
 Then invoke the `@evaluator` subagent:
-> Read harness/contract.md, harness/spec.md, and harness/sprint-status.md. Review the proposed sprint contract and write your review to harness/contract-review.md.
+> Read harness/sprints/sprint-[N]/contract.md, harness/spec.md, and harness/sprint-status.md. Review the proposed sprint contract and write your review to harness/sprints/sprint-[N]/contract-review.md.
 
-Read `harness/contract-review.md`. If the assessment is not APPROVED:
+Read `harness/sprints/sprint-N/contract-review.md`. If the assessment is not APPROVED:
 - Invoke the `@generator` with the review feedback:
-  > Read harness/contract-review.md and harness/spec.md. Revise the sprint contract based on the evaluator's feedback. Update harness/contract.md with the revised contract.
+  > Read harness/sprints/sprint-[N]/contract-review.md and harness/spec.md. Revise the sprint contract based on the evaluator's feedback. Update harness/sprints/sprint-[N]/contract.md with the revised contract.
 - Then invoke `@evaluator` again to re-review.
-- Loop until the evaluator approves (note: `harness/contract-accepted.md` should exist when approved).
+- Loop until the evaluator approves (note: `harness/sprints/sprint-N/contract-accepted.md` should exist when approved).
 
 **3b. Build**
 
 Update `harness/sprint-status.md` to phase `building`.
 
 Invoke the `@generator` subagent:
-> Build Sprint [N] according to the contract in harness/contract.md. Read harness/spec.md for the full product context. Write your self-evaluation to harness/self-eval.md and your handoff to harness/handoff.md when done. Keep the dev server running.
+> Build Sprint [N] according to the contract in harness/sprints/sprint-[N]/contract.md. Read harness/spec.md for the full product context. Write your self-evaluation to harness/sprints/sprint-[N]/self-eval.md and your handoff to harness/sprints/sprint-[N]/handoff.md when done. Keep the dev server running.
 
-Ensure the dev server starts. You may need to run the start command (check `harness/handoff.md` after the generator writes it).
+Ensure the dev server starts. You may need to run the start command (check `harness/sprints/sprint-N/handoff.md` after the generator writes it).
 
 **3c. Evaluate**
 
 Update `harness/sprint-status.md` to phase `evaluation`.
 
 Invoke the `@evaluator` subagent:
-> Evaluate Sprint [N]. Read harness/handoff.md for instructions, harness/contract.md for success criteria, and harness/spec.md for product context. Interact with the running application to test all success criteria. Write your detailed evaluation to harness/evaluation.md.
+> Evaluate Sprint [N]. Read harness/sprints/sprint-[N]/handoff.md for instructions, harness/sprints/sprint-[N]/contract.md for success criteria, and harness/spec.md for product context. Interact with the running application to test all success criteria. Write your detailed evaluation to harness/sprints/sprint-[N]/evaluation.md.
 
-Read `harness/evaluation.md` after completion.
+Read `harness/sprints/sprint-N/evaluation.md` after completion.
 
 **3d. Iteration (if needed)**
 
 If the evaluation verdict is FAIL and re-evaluation rounds < 3:
 1. Update `harness/sprint-status.md` to phase `iteration`, incrementing the round.
 2. Invoke `@generator`:
-   > Read harness/evaluation.md and harness/contract.md. Fix the issues listed in the evaluation's "Required Fixes" section. Update harness/handoff.md with what was fixed when done.
+   > Read harness/sprints/sprint-[N]/evaluation.md and harness/sprints/sprint-[N]/contract.md. Fix the issues listed in the evaluation's "Required Fixes" section. Update harness/sprints/sprint-[N]/handoff.md with what was fixed when done.
 3. Re-invoke `@evaluator`:
-   > Re-evaluate Sprint [N] Round [X]. Read the updated harness/handoff.md for what was fixed, then re-test ONLY the failed criteria and reported bugs from harness/evaluation.md. Write your updated evaluation to harness/evaluation.md.
-4. Read the updated `harness/evaluation.md`.
+   > Re-evaluate Sprint [N] Round [X]. Read the updated harness/sprints/sprint-[N]/handoff.md for what was fixed, then re-test ONLY the failed criteria and reported bugs from harness/sprints/sprint-[N]/evaluation.md. Write your updated evaluation to harness/sprints/sprint-[N]/evaluation.md.
+4. Read the updated `harness/sprints/sprint-N/evaluation.md`.
 5. Repeat until PASS or max 3 rounds reached.
 
 If PASS or max rounds reached:
@@ -196,9 +208,9 @@ After all sprints are complete, write `harness/final-summary.md`:
 ## Sprints Completed
 
 ### Sprint [N]: [Name] — [PASS/FAIL/PARTIAL]
-- Evaluation rounds: [count]
+- Evaluation rounds: [count — read from harness/sprints/sprint-N/evaluation.md]
 - Contract negotiation rounds: [count]
-- Key issues found and addressed: [summary]
+- Key issues found and addressed: [summary — read from harness/sprints/sprint-N/evaluation.md]
 
 [... repeat for each sprint ...]
 
@@ -224,7 +236,7 @@ Update `harness/sprint-status.md` to:
 2. **Cap iteration at 3 rounds per sprint**: If after 3 rounds of fixes the sprint still fails, note the failure and move on. Don't get stuck.
 3. **Read between phases**: Always read the output files between agent invocations to confirm they completed correctly before moving on.
 4. **Keep the app running**: The evaluator needs a live application. Ensure the dev server stays running between build and evaluation phases.
-5. **Preserve context**: Ensure each agent invocation reads the relevant context files (spec, contract, previous evaluations) before starting work.
+5. **Preserve context**: Ensure each agent invocation reads the relevant context files (spec, sprint contract, previous sprint evaluations) before starting work. When starting a new sprint, agents can reference previous sprint folders under `harness/sprints/` for historical context.
 6. **Don't modify files directly**: Your job is orchestration, not implementation. Use subagents for all substantive work.
 7. **Update sprint-status.md at every phase transition**: This file is the single source of truth for where the workflow is. All agents read it at the start of each invocation.
 8. **Handle failures gracefully**: If an agent invocation fails or produces unexpected output, read the files to understand what happened, and adjust the plan accordingly.
